@@ -1,5 +1,6 @@
 package org.abbas.customer;
 
+import com.abbas.amq.RabbitMQMessageProducer;
 import lombok.AllArgsConstructor;
 import org.abbas.clients.fraud.FraudCheckResponse;
 import org.abbas.clients.fraud.FraudClient;
@@ -20,6 +21,8 @@ public class CustomerService{
 
     private final NotificationClient notificationClient;
 
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
+
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -38,19 +41,23 @@ public class CustomerService{
 
         FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
 
-        assert fraudCheckResponse != null;
+
         if(fraudCheckResponse.isFraudster()){
             throw new IllegalStateException("fraudster user");
         }
 
-        // Send Notification
-        notificationClient.sendNotification(
-                new NotificationRequest(
-                        customer.getId(),
-                        customer.getEmail(),
-                        String.format("Hi %s, Welcome to this Site.",
-                                customer.getFirstName())
-                )
+        NotificationRequest notificationRequest = new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                String.format("Hi %s, Welcome to this Site.",
+                        customer.getFirstName())
         );
+
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
+                );
+
     }
 }

@@ -52,6 +52,17 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.abbas</groupId>
+            <artifactId>amq</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.abbas</groupId>
             <artifactId>clients</artifactId>
             <version>0.0.1-SNAPSHOT</version>
