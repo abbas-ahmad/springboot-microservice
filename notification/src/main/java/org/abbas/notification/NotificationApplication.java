@@ -19,7 +19,7 @@ public class NotificationApplication {
         SpringApplication.run(NotificationApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     CommandLineRunner commandLineRunner(
             RabbitMQMessageProducer producer,
             NotificationConfig notificationConfig){
@@ -30,5 +30,5 @@ public class NotificationApplication {
                     notificationConfig.getInternalNotificationRoutingKey()
             );
         };
-    }
+    }*/
 }
