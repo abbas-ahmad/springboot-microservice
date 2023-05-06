@@ -1,4 +1,4 @@
-package org.abbas;
+package org.abbas.notification;
 
 import lombok.*;
 
